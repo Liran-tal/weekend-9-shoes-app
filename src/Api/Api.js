@@ -14,12 +14,12 @@ export default class Api {
     return await axoisApi.post("",item);
   }
   
-  static editItem = async (item) => {
-    return await axoisApi.put("",item);
+  static editItem = async (itemId) => {
+    return await axoisApi.put("",itemId);
   }
   
-  static deleteItem = async (item) => {
-    return await axoisApi.delete("",item);
+  static deleteItem = async (itemId) => {
+    return await axoisApi.delete(itemId);
   }
   
   

@@ -1,6 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Api from "../../Api/Api";
 import Card from "../card/card";
+import Loader from "../Loader/loader";
 
 
 export default class Main extends React.Component {
@@ -9,10 +11,13 @@ export default class Main extends React.Component {
 		data: [],
 	}
 
+
+	// Get data from API
+
+
 	componentDidMount = async () => {
 		try {
 			const { data } = await Api.getData('');
-			console.log(data);
 			this.setState({data: data});
 		} 
 		catch (error) {
@@ -22,27 +27,60 @@ export default class Main extends React.Component {
 
 	displayData = () => {
 		if (this.state.data.length < 1) {
-			return (
-				<div className="ui segment">
-					<div className="ui active inverted dimmer">
-						<div className="ui large text loader">Loading</div>
-					</div>
-				</div>
-			)
+			return <Loader />
 		}
 
-		console.log(this.state.data[0]);
 		return (
 			this.state.data.map((shoe) => {
-				return (<Card key={shoe.id} data={shoe} />)
+				return (<Card 
+						key={shoe.id} 
+						data={shoe} 
+						onClick={this.onDelete}
+					/>
+				)
 			})
 		)
+	}
+
+
+
+	// Delete items
+
+
+	onDelete = async ({target}) => {
+		const item = this.findItem(target.id);
+		const newData = this.state.data.splice(this.state.data.indexOf(item), 1);
+		console.log("targetid: ", target.id);
+
+		try {
+			if (await Api.deleteItem(target.id)) {
+				const { data } = await Api.getData('');
+				this.setState({data: data});
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+
+	// General functions
+
+	findItem = (id) => {
+		return this.state.data.find((item) => {
+			return id === item.id;
+		})
 	}
 
 	render () {
 		return (
 			<div>
-				Hello
+				<Link 
+					to={"/item"} 
+					className="ui primary grey button"
+					style={{margin:"10px", textAlign: "center"}}
+				>
+					<i className="plus circle icon"></i>
+				</Link>
 				<div className="ui cards">
 					{this.displayData()}
 				</div>

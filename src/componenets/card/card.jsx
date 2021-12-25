@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Button from "../button/button";
 
-export default function Card({data}) {
-	console.log(data);
+export default function Card({data, onClick}) {
 	return (
 		<div className="ui card">
 			<div className="image">
@@ -24,8 +23,9 @@ export default function Card({data}) {
 				<Button
 					text="Delete"
 					value="delete"
+					id={data.id}
 					style=""
-					onClick={data.onClick}
+					onClick={onClick}
 				/>
 			</div>
 		</div>
