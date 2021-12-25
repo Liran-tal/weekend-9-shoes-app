@@ -15,14 +15,8 @@ export default class Main extends React.Component {
 	// Get data from API
 
 
-	componentDidMount = async () => {
-		try {
-			const { data } = await Api.getData('');
-			this.setState({data: data});
-		} 
-		catch (error) {
-			console.log(error);
-		}
+	componentDidMount = () => {
+		this.apiToState();
 	}
 
 	displayData = () => {
@@ -43,28 +37,39 @@ export default class Main extends React.Component {
 		)
 	}
 
-
+	componentDidUpdate = () => {
+		if (this.props.itemChangedId)	{	
+			this.apiToState();
+		}
+	}
 
 	// Delete items
 
 
 	onDelete = async ({target}) => {
-		const item = this.findItem(target.id);
-		const newData = this.state.data.splice(this.state.data.indexOf(item), 1);
-		console.log("targetid: ", target.id);
-
 		try {
 			if (await Api.deleteItem(target.id)) {
-				const { data } = await Api.getData('');
-				this.setState({data: data});
+				this.apiToState();
 			}
-		} catch (error) {
+		} 
+		catch (error) {
 			console.log(error);
 		}
 	}
 
 
 	// General functions
+
+
+	apiToState = async () => {
+		try {
+			const { data } = await Api.getData('');
+			this.setState({data: data});
+		} 
+		catch (error) {
+			console.log(error);	
+		}
+	}
 
 	findItem = (id) => {
 		return this.state.data.find((item) => {

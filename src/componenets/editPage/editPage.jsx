@@ -6,7 +6,12 @@ import ItemEditor from "../itemEditor/itemEditor";
 export default class extends React.Component {
 
 	state = {
-		item: {},
+		item: {
+			model: "",
+			inStock: 0,
+			avatar: "",
+			id: ""
+		},
 		isEdit: false,
 	}
 
@@ -25,18 +30,41 @@ export default class extends React.Component {
 		}
 	}
 
-	onChange = () => {
-
+	onChange = ({target}) => {
+		this.setState((prevState) => ({
+			...prevState,
+			item: {
+				...prevState.item,
+				[target.name]: target.value,
+			}
+		}))
 	}
 
-	onSubmit = () => {
+	onSubmit = async (event) => {
+		event.preventDefault();
 
+		if (event.target.value === "add") {
+			try {
+				return await Api.addItem(this.state.item);	
+			} 
+			catch (error) {
+			console.error(error);	
+			}
+		}
+
+		try {
+			return await Api.editItem(this.state.item);	
+		} 
+		catch (error) {
+			console.error(error);	
+		}
 	}
 
 	render () {
 		return(
 			// <ItemEditor 
-			// 	item={this.state.item}	
+			// 	item={this.state.item}
+					// getChangedItemId={this.props.getChangedItemId}
 			// />
 			<>Edit Page</>
 		)

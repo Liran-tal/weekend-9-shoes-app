@@ -1,17 +1,24 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Param from "./componenets/editPage/Param";
 import Main from "./componenets/main/main";
 import EditPage from "./componenets/editPage/editPage";
 import './App.css';
 
 
 class App extends React.Component {
-  state = {itemToEditId: -1}
+  state = {
+    itemToEditId: undefined,
+    itemChangedId: undefined,
+  }
   
-  handleItemEdit = ({target}) => {
+  handleClickItemEdit = ({target}) => {
     this.setState({itemToEditId: target.id});
   }
+  
+  getChangedItemId = ({target}) => {
+    this.setState({itemChangedId: target.id});
+  }
+
 
   render () {
     return (
@@ -20,12 +27,21 @@ class App extends React.Component {
           <Routes>
             <Route 
               path={"/"} 
-              element={<Main onItemEdit={this.handleItemEdit} />}
+              element={<Main 
+                onItemEdit={this.handleClickItemEdit} 
+                itemChangedId={this.state.itemChangedId}
+              />}
             />
-            {/* <Route path={"/edit/:id"} element={<Param />}/> */}
             <Route 
               path={"/edit"} 
-              element={<EditPage id={this.state.itemToEditId} />}
+              element={<EditPage 
+                getChangedItemId={this.getChangedItemId}
+                id={this.state.itemToEditId} 
+              />}
+            />
+            <Route 
+              path={"/item"} 
+              element={<EditPage />}
             />
           </Routes>
         </BrowserRouter>
