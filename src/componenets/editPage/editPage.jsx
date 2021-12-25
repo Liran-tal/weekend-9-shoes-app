@@ -3,17 +3,23 @@ import Api from "../../Api/Api";
 import ItemEditor from "../itemEditor/itemEditor";
 
 
-export default class extends React.Component {
+export default class EditPage extends React.Component {
 
-	state = {
-		item: {
-			model: "",
-			inStock: 0,
-			avatar: "",
-			id: ""
-		},
-		isEdit: false,
+	defaultState = () => {
+		return (
+			{
+				item: {
+					model: "",
+					inStock: 0,
+					avatar: "",
+					id: ""
+				},
+				isEdit: false,
+			}
+		)
 	}
+	
+	state = this.defaultState();
 
 	componentDidMount = async () => {
 		if (!this.props.id) {
@@ -45,7 +51,9 @@ export default class extends React.Component {
 
 		if (event.target.value === "add") {
 			try {
-				return await Api.addItem(this.state.item);	
+				await Api.addItem(this.state.item);	
+				this.setState(this.defaultState());
+				return ;
 			} 
 			catch (error) {
 			console.error(error);	
@@ -53,7 +61,9 @@ export default class extends React.Component {
 		}
 
 		try {
-			return await Api.editItem(this.state.item);	
+			await Api.editItem(this.state.item);	
+			this.setState(this.defaultState());
+			return ;
 		} 
 		catch (error) {
 			console.error(error);	
@@ -62,11 +72,13 @@ export default class extends React.Component {
 
 	render () {
 		return(
-			// <ItemEditor 
-			// 	item={this.state.item}
-					// getChangedItemId={this.props.getChangedItemId}
-			// />
-			<>Edit Page</>
+			<ItemEditor 
+				item={this.state.item}
+				onChange={this.onChange}
+				onSubmit={this.onSubmit}
+				getChangedItemId={this.props.getChangedItemId}
+			/>
+			// <>Edit Page</>
 		)
 	}
 }

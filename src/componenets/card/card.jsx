@@ -6,7 +6,7 @@ export default function Card({data, onItemDelete, onItemEdit}) {
 	return (
 		<div className="ui card">
 			<div className="image">
-				<img src={data.avatar} />
+				<img src={data.avatar} alt={data.model}/>
 			</div>
 			<div className="content">
 				<div className="header">
@@ -30,7 +30,7 @@ export default function Card({data, onItemDelete, onItemEdit}) {
 					text="Delete"
 					value="delete"
 					id={data.id}
-					style=""
+					style={{}}
 					onClick={onItemDelete}
 				/>
 			</div>
