@@ -6,16 +6,16 @@ const axoisApi = axios.create({
 
 export default class Api {
 
-  static getData = async () => {
-    return await axoisApi.get(); 
+  static getData = async (id) => {
+    return await axoisApi.get(id); 
   } 
 
   static addItem = async (item) => {
     return await axoisApi.post("",item);
   }
   
-  static editItem = async (itemId) => {
-    return await axoisApi.put("",itemId);
+  static editItem = async (itemId, newItem) => {
+    return await axoisApi.put(itemId, newItem);
   }
   
   static deleteItem = async (itemId) => {

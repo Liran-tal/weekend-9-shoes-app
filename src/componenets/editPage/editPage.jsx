@@ -10,9 +10,9 @@ export default class EditPage extends React.Component {
 			{
 				item: {
 					model: "",
-					inStock: 0,
+					inStock: "",
 					avatar: "",
-					id: ""
+					// id: ""
 				},
 				isEdit: false,
 			}
@@ -27,9 +27,8 @@ export default class EditPage extends React.Component {
 		}
 		
 		try {
-			console.log(this.props);
-			const item = await Api.getData('' + this.props.id);
-			this.setState({item: item, isEdit: true});
+			const {data} = await Api.getData(this.props.id);
+			this.setState({item: data, isEdit: true});
 		} 
 		catch (error) {
 			console.error(error);
@@ -48,9 +47,11 @@ export default class EditPage extends React.Component {
 
 	onSubmit = async (event) => {
 		event.preventDefault();
-
+		console.log(event.target);
+		console.log(event.target.value);
 		if (event.target.value === "add") {
 			try {
+				console.log(this.state.item);
 				await Api.addItem(this.state.item);	
 				this.setState(this.defaultState());
 				return ;
@@ -61,7 +62,7 @@ export default class EditPage extends React.Component {
 		}
 
 		try {
-			await Api.editItem(this.state.item);	
+			await Api.editItem(this.props.id, this.state.item);	
 			this.setState(this.defaultState());
 			return ;
 		} 
@@ -71,12 +72,14 @@ export default class EditPage extends React.Component {
 	}
 
 	render () {
+		console.log(this.state);
 		return(
 			<ItemEditor 
 				item={this.state.item}
 				onChange={this.onChange}
 				onSubmit={this.onSubmit}
 				getChangedItemId={this.props.getChangedItemId}
+				isEdit={this.state.isEdit}
 			/>
 			// <>Edit Page</>
 		)
