@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Button from "../button/button";
 
-export default function Card({data, onClick}) {
+export default function Card({data, onItemDelete, onItemEdit}) {
 	return (
 		<div className="ui card">
 			<div className="image">
@@ -17,7 +17,13 @@ export default function Card({data, onClick}) {
 				</div>
 			</div>
 			<div>
-				<Link to={`/edit/:${data.id}`} className={"ui button"}>
+				<Link 
+					to={"/edit/"} 
+					className={"ui button"}
+					onClick={onItemEdit}
+					value="edit"
+					id={data.id}
+				>
 					Edit
 				</Link>
 				<Button
@@ -25,7 +31,7 @@ export default function Card({data, onClick}) {
 					value="delete"
 					id={data.id}
 					style=""
-					onClick={onClick}
+					onClick={onItemDelete}
 				/>
 			</div>
 		</div>

@@ -4,11 +4,6 @@ import EditPage from './editPage';
 
 const Param = () => {
   const id = useParams();
-  try {
-		const item = await Api.getData(id);
-    return <EditPage details={id} />;
-	} catch (error) {
-		console.log(error);
-	}
+  return <EditPage details={id} />;
 };
 export default Param;

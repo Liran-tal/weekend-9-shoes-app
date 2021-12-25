@@ -35,7 +35,8 @@ export default class Main extends React.Component {
 				return (<Card 
 						key={shoe.id} 
 						data={shoe} 
-						onClick={this.onDelete}
+						onItemDelete={this.onDelete}
+						onItemEdit={this.props.onItemEdit}
 					/>
 				)
 			})
