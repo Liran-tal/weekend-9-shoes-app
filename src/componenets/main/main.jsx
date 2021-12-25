@@ -1,5 +1,6 @@
 import React from "react";
 import Api from "../../Api/Api";
+import Card from "../card/card";
 
 
 export default class Main extends React.Component {
@@ -10,7 +11,7 @@ export default class Main extends React.Component {
 
 	componentDidMount = async () => {
 		try {
-			const { data } = await Api.get('');
+			const { data } = await Api.getData('');
 			console.log(data);
 			this.setState({data: data});
 		} 
@@ -20,10 +21,20 @@ export default class Main extends React.Component {
 	}
 
 	displayData = () => {
+		if (this.state.data.length < 1) {
+			return (
+				<div className="ui segment">
+					<div className="ui active inverted dimmer">
+						<div className="ui large text loader">Loading</div>
+					</div>
+				</div>
+			)
+		}
+
 		console.log(this.state.data[0]);
 		return (
 			this.state.data.map((shoe) => {
-				return (<div>{shoe.model}</div>)
+				return (<Card key={shoe.id} data={shoe} />)
 			})
 		)
 	}
@@ -32,7 +43,7 @@ export default class Main extends React.Component {
 		return (
 			<div>
 				Hello
-				<div>
+				<div className="ui cards">
 					{this.displayData()}
 				</div>
 			</div>

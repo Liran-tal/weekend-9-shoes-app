@@ -1,30 +1,33 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Button from "../button/button";
 
-
-export default function Card(props) {
-
+export default function Card({data}) {
+	console.log(data);
 	return (
-		props.isEdit 
-			? displayEdit(props) 
-			: displayCArd(props)
-	)
-}
-
-function displayCArd(props) {
-	return (
-		<div class="ui card">
-			<div class="image">
-				<img src={props.data.avatar} />
+		<div className="ui card">
+			<div className="image">
+				<img src={data.avatar} />
 			</div>
-			<div class="content">
-				<div class="header">
-					Model: {props.data.model}
+			<div className="content">
+				<div className="header">
+					Model: {data.model}
 				</div>
-				<div class="description">
-					In Stock: {props.data.inStock}
+				<div className="description">
+					In Stock: {data.inStock}
 				</div>
+			</div>
+			<div>
+				<Link to={`/edit/:${data.id}`} className={"ui button"}>
+					Edit
+				</Link>
+				<Button
+					text="Delete"
+					value="delete"
+					style=""
+					onClick={data.onClick}
+				/>
 			</div>
 		</div>
-	)	
+	)
 }
